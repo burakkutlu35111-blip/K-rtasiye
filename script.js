@@ -66,6 +66,7 @@ function saveToLocalStorage() {
     localStorage.setItem("kirtasiye_stok", JSON.stringify(products));
 }
 
+// İSTATİSTİKLER VE DİNAMİK ROZET SAYACI
 function updateStats() {
     const totalTypes = products.length;
     const criticalCount = products.filter(p => Number(p.stock) <= Number(p.critical)).length;
@@ -75,8 +76,12 @@ function updateStats() {
     document.getElementById("stat-critical-count").innerText = criticalCount.toLocaleString();
     document.getElementById("stat-total-quantity").innerText = totalQuantity.toLocaleString();
     
-    sideCriticalBadge.innerText = criticalCount;
-    sideCriticalBadge.style.display = criticalCount > 0 ? "inline-block" : "none";
+    // GÖRSELDEKİ ALANIN DİNAMİK OLARAK DEĞİŞTİRİLMESİ
+    if (sideCriticalBadge) {
+        sideCriticalBadge.innerText = criticalCount;
+        // Eğer kritik ürün sayısı 0'dan büyükse göster, 0 ise kalabalık etmesin diye gizle
+        sideCriticalBadge.style.display = criticalCount > 0 ? "inline-block" : "none";
+    }
 }
 
 function renderTable() {
@@ -204,8 +209,7 @@ menuCritical.addEventListener("click", (e) => {
 
 function openModalWindow() { modal.classList.add("active"); }
 function closeModalWindow() { modal.classList.remove("active"); productForm.reset(); }
-
 btnOpenModal.addEventListener("click", openModalWindow);
 btnCloseModal.addEventListener("click", closeModalWindow);
 btnCancelModal.addEventListener("click", closeModalWindow);
-
+init();
